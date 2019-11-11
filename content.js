@@ -85,24 +85,28 @@ while(investigar) {
 
 if(calcularTiempo ) {
 
-    var totalTime = 8 * 60 * 60 * 1000 + 20 *60 * 1000;//8 horas y 20 minutos
-    if(new Date().getDay() == 5)
-    {
-        totalTime = 7 * 60 * 60 * 1000 + 15 * 60 * 1000;//7 horas y 15 minutos
-    }
+    var DiasDeLaSemana = ["Domingo","Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
 
-    var now = new Date();
-    str = tiempos[startIdx]
-    var lastEnter = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))
-    var timeWorkedSinceLastEnter = now - lastEnter
-    msAcum += timeWorkedSinceLastEnter
-    var leftTime = totalTime - msAcum // this is the totalTime we must work from the last enter
-    var dateExit = new Date(now.getTime() + leftTime);
-    var dateWorked = new Date(msAcum)
-    var dateTotalTime = new Date(totalTime)
+    chrome.storage.local.get(['key'], function(element){
+        var day = new Date().getDay()
+        var keyH = DiasDeLaSemana[day]+ "_h"
+        var keyM = DiasDeLaSemana[day]+ "_m"
+        var totalTime = element.key[keyH] * 60 * 60 * 1000 + element.key[keyM] *60 * 1000;
 
-    addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + dateWorked.getMinutes() + " minutos." + " (" + (dateTotalTime.getHours()-1)+":"+dateTotalTime.getMinutes() + ")")
-    addText("Hora salida => " + dateExit.getHours() + ":" + dateExit.getMinutes())
+        var now = new Date();
+        str = tiempos[startIdx]
+        var lastEnter = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))
+        var timeWorkedSinceLastEnter = now - lastEnter
+        msAcum += timeWorkedSinceLastEnter
+        var leftTime = totalTime - msAcum // this is the totalTime we must work from the last enter
+        var dateExit = new Date(now.getTime() + leftTime);
+        var dateWorked = new Date(msAcum)
+        var dateTotalTime = new Date(totalTime)
+
+        addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + dateWorked.getMinutes() + " minutos." + " (" + (dateTotalTime.getHours()-1)+":"+dateTotalTime.getMinutes() + ")")
+        addText("Hora salida => " + dateExit.getHours() + ":" + dateExit.getMinutes())
+    });
+    
 }
 else
 {

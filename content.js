@@ -1,6 +1,6 @@
 function nextStart(indexStart) {
-    for( var i =indexStart; i < type.length; i++) {
-        if(type[i] == "Entrada"){
+    for( var i =indexStart; i < tipo.length; i++) {
+        if(tipo[i] == "Entrada"){
            return i;
         }
     }
@@ -8,30 +8,37 @@ function nextStart(indexStart) {
 }
 
 function nextEnd(indexStart) {
-    for( var i =indexStart; i < type.length; i++) {
-        if(type[i] == "Salida"){
+    for( var i =indexStart; i < tipo.length; i++) {
+        if(tipo[i] == "Salida"){
            return i;
         }
     }
     return -1;
 }
 
-var rows = document.getElementsByClassName("PowerGridValidar")[0].rows;//get the rows
+function addText(str1){
+    dondeIntroducir = document.getElementById("MainContent_gridMovimientos")
+    var my_p = document.createElement("p")
+    my_p.innerText = str1
+    dondeIntroducir.appendChild(my_p)
+}
+
+var rows = document.getElementsByClassName("PowerGridValidar")[0].rows;
 
 var filter_rows = []
 
 for(var ind = rows .length -2; ind >= 1; ind= ind -2) {
     i = rows [ind];
-    filter_rows.push(rows [ind]);//filter the rows
+    filter_rows.push(rows [ind]);
 }
 
-var times = []
-var type = []
+var tiempos = []
+var tipo = []
 
 for( var ind = 0; ind < filter_rows.length; ind++) {
 
-    times.push(filter_rows[ind].getElementsByTagName("td")[0].innerText)
-    type.push(filter_rows[ind].getElementsByTagName("td")[1].innerText)
+    tiempos.push(filter_rows[ind].getElementsByTagName("td")[0].innerText)
+    tipo.push(filter_rows[ind].getElementsByTagName("td")[1].innerText)
 }
 
 
@@ -47,27 +54,30 @@ while(investigar) {
 
     if(startIdx != -1)
     {
-        //start time
+        //hay una apertura de tiempo
         var endIdx = nextEnd(actualIndex);
         if(endIdx != -1)
         {
-            //there is some close data
-            var startDate = new Date(times[startIdx])
-            var endDate = new Date(times[endIdx])
+            //se ha cerrado
+            str = tiempos[startIdx]
+            var startDate = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))//year, month, day, hours, minutes, seconds, milliseconds
+            str = tiempos[endIdx]
+            var endDate = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))
             var diff = endDate - startDate;
             msAcum += diff;
-            actualIndex = endIdx + 1;//we go to the next index
+            actualIndex = endIdx + 1;//nos ponemos donde la ultima salida
         }
         else
         {
-            //there is a open, but not end
+            //hay una apertura, sin cierre
             investigar = false;
             calcularTiempo = true;
         }
     }
     else
     {
-        //here there are no opening. We go out without do anything
+        //si llegamos aqui es porque ya no hay aperturas, asi que salimos e indicamos que no se investigue mas
+
         calcularTiempo = false;
         investigar = false;
     }
@@ -75,19 +85,27 @@ while(investigar) {
 
 if(calcularTiempo ) {
 
-    var totalTime = 8 * 60 * 60 * 1000 + 20 *60 * 1000;//8 h y 20 min
+    var totalTime = 8 * 60 * 60 * 1000 + 20 *60 * 1000;//8 horas y 20 minutos
     if(new Date().getDay() == 5)
     {
-        totalTime = 7 * 60 * 60 * 1000 + 15 * 60 * 1000;//7 h y 15 min
+        totalTime = 7 * 60 * 60 * 1000 + 15 * 60 * 1000;//7 horas y 15 minutos
     }
-    var leftTime = (totalTime - msAcum);
-    var startDate = new Date(times[nextStart(actualIndex)])
-    var exitTime = new Date(startDate.getTime() + leftTime)
 
-    document.getElementById("FooterCenter").innerText += "Salida a las => " + exitTime
+    var now = new Date();
+    str = tiempos[startIdx]
+    var lastEnter = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))
+    var timeWorkedSinceLastEnter = now - lastEnter
+    msAcum += timeWorkedSinceLastEnter
+    var leftTime = totalTime - msAcum // this is the totalTime we must work from the last enter
+    var dateExit = new Date(now.getTime() + leftTime);
+    var dateWorked = new Date(msAcum)
+    var dateTotalTime = new Date(totalTime)
+
+    addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + dateWorked.getMinutes() + " minutos." + " (" + (dateTotalTime.getHours()-1)+":"+dateTotalTime.getMinutes() + ")")
+    addText("Hora salida => " + dateExit.getHours() + ":" + dateExit.getMinutes())
 }
 else
 {
-    var totalTime = new Date(msAcum)
-    document.getElementById("FooterCenter").innerText += "Horas =>" + (totalTime.getHours() - 1) + " Minutos => " + totalTime.getMinutes()
+    var dateWorked = new Date(msAcum)
+    addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + dateWorked.getMinutes() + " bminutos.")
 }

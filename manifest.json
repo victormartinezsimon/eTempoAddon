@@ -4,6 +4,8 @@
   "name": "Write exit time on eTempo Web",
   "version": "0.1.0",
   "description": "Write the exit time on eTempo web",
+  "options_page": "options.html",
+  "permissions": ["storage"],
  
   "content_scripts": [{
     "js": ["content.js"],

@@ -91,7 +91,17 @@ if(calcularTiempo ) {
         var day = new Date().getDay()
         var keyH = DiasDeLaSemana[day]+ "_h"
         var keyM = DiasDeLaSemana[day]+ "_m"
-        var totalTime = element.key[keyH] * 60 * 60 * 1000 + element.key[keyM] *60 * 1000;
+
+        var finded = false;
+
+        if(!keyH) {
+            var totalTime = 8 * 60 * 60 * 1000 + 20 *60 * 1000;
+        }
+        else {
+            var totalTime = element.key[keyH] * 60 * 60 * 1000 + element.key[keyM] *60 * 1000;
+            finded = true;
+        }
+
 
         var now = new Date();
         str = tiempos[startIdx]
@@ -105,6 +115,9 @@ if(calcularTiempo ) {
 
         addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + dateWorked.getMinutes() + " minutos." + " (" + (dateTotalTime.getHours()-1)+":"+dateTotalTime.getMinutes() + ")")
         addText("Hora salida => " + dateExit.getHours() + ":" + dateExit.getMinutes())
+        if(!finded) {
+            addText("Usando tiempo por defecto. Por favor, configure la extensión")
+        }
     });
     
 }

@@ -23,6 +23,14 @@ function addText(str1){
     dondeIntroducir.appendChild(my_p)
 }
 
+function formatMinutes(value){
+    str = value;
+    if(value < 10) {
+        str = "0" + str
+    }
+    return str;
+}
+
 var rows = document.getElementsByClassName("PowerGridValidar")[0].rows;
 
 var filter_rows = []
@@ -94,7 +102,7 @@ if(calcularTiempo ) {
 
         var finded = false;
 
-        if(!keyH) {
+        if((Object.keys(element).length === 0 && element.constructor === Object) || !element.key[keyH] || !element.key[keyM]) {
             var totalTime = 8 * 60 * 60 * 1000 + 20 *60 * 1000;
         }
         else {
@@ -113,8 +121,9 @@ if(calcularTiempo ) {
         var dateWorked = new Date(msAcum)
         var dateTotalTime = new Date(totalTime)
 
-        addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + dateWorked.getMinutes() + " minutos." + " (" + (dateTotalTime.getHours()-1)+":"+dateTotalTime.getMinutes() + ")")
-        addText("Hora salida => " + dateExit.getHours() + ":" + dateExit.getMinutes())
+        addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + formatMinutes(dateWorked.getMinutes()) + " minutos." + 
+                " (" + (dateTotalTime.getHours()-1) + ":" + formatMinutes(dateTotalTime.getMinutes()) + ")")
+        addText("Hora salida => " + dateExit.getHours() + ":" + formatMinutes(dateExit.getMinutes()))
         if(!finded) {
             addText("Usando tiempo por defecto. Por favor, configure la extensión")
         }
@@ -124,5 +133,5 @@ if(calcularTiempo ) {
 else
 {
     var dateWorked = new Date(msAcum)
-    addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + dateWorked.getMinutes() + " bminutos.")
+    addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + formatMinutes(dateWorked.getMinutes()) + " minutos.")
 }

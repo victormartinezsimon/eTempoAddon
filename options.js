@@ -24,13 +24,13 @@ function startFunction(){
 
     let button = document.getElementById('myButton');
     button.addEventListener('click', function() {
-        f_click();
+        f_click(false);
     });
 
     default_values();
 }
 
-function f_click(){
+function f_click(_default){
     
     var resultados= {};
     for(i = 0; i < DiasDeLaSemana.length; i++)
@@ -48,6 +48,10 @@ function f_click(){
         }   
     }
     chrome.storage.local.set({key: resultados}, null);
+
+    if(!_default) {
+        alert("Datos guardados correctamente");
+    }
 }
 
 function default_values() {
@@ -72,7 +76,7 @@ function default_values() {
                     v.value = "20";
             }
         }
-        f_click();
+        f_click(true);
     });
 }
 

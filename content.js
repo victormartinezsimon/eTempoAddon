@@ -1,26 +1,28 @@
+//get the next enter
 function nextStart(indexStart) {
-    for( var i =indexStart; i < tipo.length; i++) {
-        if(tipo[i] == "Entrada"){
+    for( var i =indexStart; i < type.length; i++) {
+        if(type[i] == "Entrada"){
            return i;
         }
     }
     return -1;
 }
-
+//get the next exit
 function nextEnd(indexStart) {
-    for( var i =indexStart; i < tipo.length; i++) {
-        if(tipo[i] == "Salida"){
+    for( var i =indexStart; i < type.length; i++) {
+        if(type[i] == "Salida"){
            return i;
         }
     }
     return -1;
 }
 
+//add some text in the page
 function addText(str1){
-    dondeIntroducir = document.getElementById("MainContent_gridMovimientos")
+    where_to_add = document.getElementById("MainContent_gridMovimientos")
     var my_p = document.createElement("p")
     my_p.innerText = str1
-    dondeIntroducir.appendChild(my_p)
+    where_to_add.appendChild(my_p)
 }
 
 function formatMinutes(value){
@@ -32,7 +34,6 @@ function formatMinutes(value){
 }
 
 var rows = document.getElementsByClassName("PowerGridValidar")[0].rows;
-
 var filter_rows = []
 
 for(var ind = rows .length -2; ind >= 1; ind= ind -2) {
@@ -40,65 +41,63 @@ for(var ind = rows .length -2; ind >= 1; ind= ind -2) {
     filter_rows.push(rows [ind]);
 }
 
-var tiempos = []
-var tipo = []
+var times = []
+var type = []
 
 for( var ind = 0; ind < filter_rows.length; ind++) {
 
-    tiempos.push(filter_rows[ind].getElementsByTagName("td")[0].innerText)
-    tipo.push(filter_rows[ind].getElementsByTagName("td")[1].innerText)
+    times.push(filter_rows[ind].getElementsByTagName("td")[0].innerText)
+    type.push(filter_rows[ind].getElementsByTagName("td")[1].innerText)
 }
 
 
-//var start = new Date(tiempos[0])
 var actualIndex = 0;
 var msAcum = 0;
-var investigar = true;
-var calcularTiempo = false;
+var continue_investigating = true;
+var calculate_time = false;
 
-while(investigar) {
+while(continue_investigating) {
 
     var startIdx = nextStart(actualIndex);
 
     if(startIdx != -1)
     {
-        //hay una apertura de tiempo
+        //here there is a start time
         var endIdx = nextEnd(actualIndex);
         if(endIdx != -1)
         {
-            //se ha cerrado
-            str = tiempos[startIdx]
+            //the time is closed, so we accumulate the time
+            str = times[startIdx]
             var startDate = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))//year, month, day, hours, minutes, seconds, milliseconds
-            str = tiempos[endIdx]
+            str = times[endIdx]
             var endDate = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))
             var diff = endDate - startDate;
             msAcum += diff;
-            actualIndex = endIdx + 1;//nos ponemos donde la ultima salida
+            actualIndex = endIdx + 1;//we move the index to the next value
         }
         else
         {
-            //hay una apertura, sin cierre
-            investigar = false;
-            calcularTiempo = true;
+            //here there is a start without a end, so we stop
+            continue_investigating = false;
+            calculate_time = true;
         }
     }
     else
     {
-        //si llegamos aqui es porque ya no hay aperturas, asi que salimos e indicamos que no se investigue mas
-
-        calcularTiempo = false;
-        investigar = false;
+        //here there are no more starts, so we exit
+        calculate_time = false;
+        continue_investigating = false;
     }
 }
+//if we must calculate time, this is because there is a start without a exit
+if(calculate_time) {
 
-if(calcularTiempo ) {
-
-    var DiasDeLaSemana = ["Domingo","Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
+    var Days_of_the_week = ["Domingo","Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
 
     chrome.storage.local.get(['key'], function(element){
         var day = new Date().getDay()
-        var keyH = DiasDeLaSemana[day]+ "_h"
-        var keyM = DiasDeLaSemana[day]+ "_m"
+        var keyH = Days_of_the_week[day]+ "_h"
+        var keyM = Days_of_the_week[day]+ "_m"
 
         var finded = false;
 
@@ -112,7 +111,7 @@ if(calcularTiempo ) {
 
 
         var now = new Date();
-        str = tiempos[startIdx]
+        str = times[startIdx]
         var lastEnter = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))
         var timeWorkedSinceLastEnter = now - lastEnter
         msAcum += timeWorkedSinceLastEnter

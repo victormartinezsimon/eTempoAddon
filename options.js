@@ -61,19 +61,13 @@ function default_values() {
             {
                 var key = DiasDeLaSemana[i] + "_h"
                 var v =document.getElementById(key);
-                if(element.key[key])
-                    v.value = element.key[key];
-                else
-                    v.value = "08";
+                v.value = element.key[key];
             }
 
             {
                 var key = DiasDeLaSemana[i] + "_m"
                 var v =document.getElementById(key);
-                if(element.key[key])
-                    v.value = element.key[key];
-                else
-                    v.value = "20";
+                v.value = element.key[key];
             }
         }
         f_click(true);

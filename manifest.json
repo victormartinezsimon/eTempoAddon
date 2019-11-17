@@ -6,7 +6,10 @@
   "description": "Write the exit time on eTempo web",
   "options_page": "options.html",
   "permissions": ["storage"],
- 
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
   "content_scripts": [{
     "js": ["content.js"],
     "matches": ["*://*.softmachine.es/eTempo/ConsultaModificacionMovimientos.aspx"]

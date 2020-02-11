@@ -13,7 +13,7 @@ chrome.runtime.onInstalled.addListener(function() {
 
         {
             var key = Days_of_the_week[i] + "_m"
-            var value ="20"
+            var value ="00"
             results[key]= value;
         }   
     }

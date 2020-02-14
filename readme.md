@@ -1,10 +1,15 @@
 # Project Title
 
-This chrome extension gives you more information on the eTempo Webpage
+This extension gives you more information on the eTempo Webpage.
+If there is paired times, will tell you the total time worked.
+If there is unpaired times, it will tell you the exit time.
+You can configure all days individualy.
 
 # Images
-![Text to show whe you don't have a complete day](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Captura1.PNG)
-![Text to show when you have a complete day](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Captura2.PNG)
+![Text to show with unpaired times](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Unpaired_Times/UnPairedTimes.png)
+![Text to show with paired times](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Paired_Times/PairedTimes.png)
+![Configuration](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Configuration/Configuration.png)
+![Error installing the extension on chrome](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Error_chrome/Error_instalation.png)
 
 
 ## License

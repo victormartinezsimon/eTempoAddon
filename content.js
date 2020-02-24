@@ -1,21 +1,13 @@
-//get the next enter
-function nextStart(indexStart) {
-    for( var i =indexStart; i < type.length; i++) {
-        if(type[i] == "Entrada"){
-           return i;
-        }
-    }
-    return -1;
+function isEnd(type)
+{
+    return type == "Salida";
 }
-//get the next exit
-function nextEnd(indexStart) {
-    for( var i =indexStart; i < type.length; i++) {
-        if(type[i] == "Salida"){
-           return i;
-        }
-    }
-    return -1;
+
+function isStart(type)
+{
+    return type ==  "Entrada";
 }
+
 
 //add some text in the page
 function addText(str1){
@@ -42,53 +34,50 @@ for(var ind = rows .length -2; ind >= 1; ind= ind -2) {
 }
 
 var times = []
-var type = []
+var types = []
 
 for( var ind = 0; ind < filter_rows.length; ind++) {
 
     times.push(filter_rows[ind].getElementsByTagName("td")[0].innerText)
-    type.push(filter_rows[ind].getElementsByTagName("td")[1].innerText)
+    types.push(filter_rows[ind].getElementsByTagName("td")[1].innerText)
 }
 
-
-var actualIndex = 0;
 var msAcum = 0;
-var continue_investigating = true;
-var calculate_time = false;
+var msAcum_notworked = 0;
 
-while(continue_investigating) {
+var lastTime = times[0];
+var last_start = 0;
 
-    var startIdx = nextStart(actualIndex);
+for( var index = 1; index < times.length; ++index)
+{
+    var now_type = types[index];
+    var now_time = times[index];
 
-    if(startIdx != -1)
+    var startDate = new Date(lastTime.substr(6,4), lastTime.substr(3,2) - 1,lastTime.substr(0,2), lastTime.substr(11,2), lastTime.substr(14,2))//year, month, day, hours, minutes, seconds, milliseconds
+    var endDate =  new Date(now_time.substr(6,4), now_time.substr(3,2) - 1,now_time.substr(0,2), now_time.substr(11,2), now_time.substr(14,2))//year, month, day, hours, minutes, seconds, milliseconds
+    var diffDate = endDate - startDate;
+
+    //I assume that if there is a endTime, we add the time to the worked time, this may work with a error sequence of Start, End1 , End2, setting the time to: (End1 - Start1) + (End2 - End1)
+    //the same thing happens on a startTime, adding this time to the not worked time 
+    if(isEnd(now_type))
     {
-        //here there is a start time
-        var endIdx = nextEnd(actualIndex);
-        if(endIdx != -1)
-        {
-            //the time is closed, so we accumulate the time
-            str = times[startIdx]
-            var startDate = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))//year, month, day, hours, minutes, seconds, milliseconds
-            str = times[endIdx]
-            var endDate = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))
-            var diff = endDate - startDate;
-            msAcum += diff;
-            actualIndex = endIdx + 1;//we move the index to the next value
-        }
-        else
-        {
-            //here there is a start without a end, so we stop
-            continue_investigating = false;
-            calculate_time = true;
-        }
+        msAcum += diffDate;
     }
-    else
+    if(isStart(now_type))
     {
-        //here there are no more starts, so we exit
-        calculate_time = false;
-        continue_investigating = false;
+        msAcum_notworked += diffDate;
+        last_start = index;
     }
+
+    lastTime = now_time;
 }
+
+var calculate_time = false;
+if(isStart(types[types.length - 1]))
+{
+    calculate_time = true;
+}
+
 //if we must calculate time, this is because there is a start without a exit
 if(calculate_time) {
 
@@ -109,9 +98,8 @@ if(calculate_time) {
             finded = true;
         }
 
-
         var now = new Date();
-        str = times[startIdx]
+        str = times[lastStart]
         var lastEnter = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))
         var timeWorkedSinceLastEnter = now - lastEnter
         msAcum += timeWorkedSinceLastEnter
@@ -119,7 +107,6 @@ if(calculate_time) {
         var dateExit = new Date(now.getTime() + leftTime);
         var dateWorked = new Date(msAcum)
         var dateTotalTime = new Date(totalTime)
-
         addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + formatMinutes(dateWorked.getMinutes()) + " minutos." + 
                 " (" + (dateTotalTime.getHours()-1) + ":" + formatMinutes(dateTotalTime.getMinutes()) + ")")
         addText("Hora salida => " + dateExit.getHours() + ":" + formatMinutes(dateExit.getMinutes()))
@@ -134,3 +121,7 @@ else
     var dateWorked = new Date(msAcum)
     addText("Tiempo Trabajado => " + (dateWorked.getHours()-1) + " horas y " + formatMinutes(dateWorked.getMinutes()) + " minutos.")
 }
+
+//allways we want to view the time not worked
+var dateDescansado = new Date(msAcum_notworked)
+addText("Tiempo descansado => " + (dateDescansado.getHours()-1) + " horas y " + formatMinutes(dateDescansado.getMinutes()) + " minutos.")

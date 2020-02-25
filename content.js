@@ -99,7 +99,7 @@ if(calculate_time) {
         }
 
         var now = new Date();
-        str = times[lastStart]
+        str = times[last_start]
         var lastEnter = new Date(str.substr(6,4), str.substr(3,2) - 1,str.substr(0,2), str.substr(11,2), str.substr(14,2))
         var timeWorkedSinceLastEnter = now - lastEnter
         msAcum += timeWorkedSinceLastEnter

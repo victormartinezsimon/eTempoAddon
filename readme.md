@@ -1,4 +1,4 @@
-# Project Title
+# eTempo Addon for Chrome and Firefox
 
 This extension gives you more information on the eTempo Webpage.
 If there is paired times, will tell you the total time worked.

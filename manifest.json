@@ -2,7 +2,7 @@
   "manifest_version": 2,
  
   "name": "Write exit time on eTempo Web",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Expand the information on the eTempo webpage.",
   "options_page": "options.html",
   "permissions": ["storage"],

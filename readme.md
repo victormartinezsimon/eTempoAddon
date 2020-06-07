@@ -5,19 +5,20 @@ If there is paired times, will tell you the total time worked.
 If there is unpaired times, it will tell you the exit time.
 You can configure all days individualy.
 
-# Images
-![Text to show with unpaired times](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Unpaired_Times/UnPairedTimes.png)
-![Text to show with paired times](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Paired_Times/PairedTimes.png)
-![Configuration](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Configuration/Configuration.png)
-![Error installing the extension on chrome](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Error_chrome/Error_instalation.png)
-
-# Stats chrome store
+# Stats Chrome store
 ![Stars on Chrome store](https://img.shields.io/chrome-web-store/stars/jjflajoclpbcnfmejjhgpefnehjppopd)
 ![Downloads on Chrome store](https://img.shields.io/chrome-web-store/users/jjflajoclpbcnfmejjhgpefnehjppopd)
 
 # Stats Mozilla store
 ![Stars on Mozilla store](https://img.shields.io/amo/stars/write-exit-time-on-etempo-web)
 ![Downloads on Mozilla store](https://img.shields.io/amo/users/write-exit-time-on-etempo-web)
+
+
+# Images
+![Text to show with unpaired times](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Unpaired_Times/UnPairedTimes.png)
+![Text to show with paired times](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Paired_Times/PairedTimes.png)
+![Configuration](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Configuration/Configuration.png)
+![Error installing the extension on chrome](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Error_chrome/Error_instalation.png)
 
 ## License
 

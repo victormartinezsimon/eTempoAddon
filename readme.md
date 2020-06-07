@@ -11,6 +11,13 @@ You can configure all days individualy.
 ![Configuration](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Configuration/Configuration.png)
 ![Error installing the extension on chrome](https://github.com/victormartinezsimon/eTempoAddon/blob/master/Build/Images/Error_chrome/Error_instalation.png)
 
+# Stats chrome store
+![Stars on Chrome store](https://img.shields.io/chrome-web-store/stars/jjflajoclpbcnfmejjhgpefnehjppopd)
+![Downloads on Chrome store](https://img.shields.io/chrome-web-store/users/jjflajoclpbcnfmejjhgpefnehjppopd)
+
+# Stats Mozilla store
+![Stars on Mozilla store](https://img.shields.io/amo/stars/write-exit-time-on-etempo-web)
+![Downloads on Mozilla store](https://img.shields.io/amo/users/write-exit-time-on-etempo-web)
 
 ## License
 
